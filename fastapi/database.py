@@ -50,3 +50,5 @@ async def delete_user(user_id: int):
     return await database.fetch_one(query=query, values={"user_id": user_id})
 
 
+
+
