@@ -8,16 +8,19 @@ import {
   MenuItem,
   Box,
   IconButton,
+  Badge,
 } from "@mui/material";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import FunctionsIcon from "@mui/icons-material/Functions";
 import PersonIcon from "@mui/icons-material/Person";
-import useBearStore from "@/store/useBearStore";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import useBearStore from "@/store/useBearStore";  // Custom store for app data (like cart count)
 
 const NavigationLayout = ({ children }) => {
   const router = useRouter();
-  const appName = useBearStore((state) => state.appName);
+  const appName = useBearStore((state) => state.appName);  // App name from store
+  const cartCount = useBearStore((state) => state.cartCount);  // Cart item count from store
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleMenuClick = (event) => {
@@ -30,20 +33,23 @@ const NavigationLayout = ({ children }) => {
 
   const handleProfileClick = () => {
     handleMenuClose();
-    router.push("/page2");
+    router.push("/dashboard");
   };
 
-  const handleLogout = () => {
+  const handleLogoutClick = () => {
     handleMenuClose();
-    // Implement your logout functionality here
-    console.log("Logout clicked");
-    // Example: router.push("/login"); // Redirect to login page after logout
+    // Logic to log out user
+  };
+
+  const handleCartClick = () => {
+    router.push("/cart");  // Navigate to the cart page
   };
 
   return (
     <>
       <AppBar position="sticky" sx={{ backgroundColor: "#ff5e15" }}>
         <Toolbar>
+          {/* App Logo and Name */}
           <Link href="/" style={{ display: "flex", alignItems: "center" }}>
             <FunctionsIcon sx={{ color: "#ffffff" }} fontSize="large" />
             <Typography
@@ -59,17 +65,40 @@ const NavigationLayout = ({ children }) => {
               {appName}
             </Typography>
           </Link>
+
+          {/* Navigation Links */}
           <NavigationLink href="/checkout" label="Checkout" />
-          <Box sx={{ flexGrow: 1 }} />
+          <NavigationLink href="/register" label="Register" />
+          <NavigationLink href="/categories" label="Categories" />
+
+          <div style={{ flexGrow: 1 }} />
+
+          {/* Cart Button with Badge */}
+          <IconButton
+            color="inherit"
+            aria-label="cart"
+            onClick={handleCartClick}
+          >
+            <Badge badgeContent={cartCount} color="error">
+              <ShoppingCartIcon />
+            </Badge>
+          </IconButton>
+
+          {/* User Icon with Menu */}
           <IconButton onClick={handleMenuClick} color="inherit">
             <PersonIcon />
           </IconButton>
-          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-            <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
-            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+          >
+            <MenuItem onClick={handleProfileClick}>Dashboard</MenuItem>
+            <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>
+
       <main>{children}</main>
     </>
   );
