@@ -15,7 +15,7 @@ import Link from "next/link";
 import FunctionsIcon from "@mui/icons-material/Functions";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import useBearStore from "@/store/useBearStore"; // Custom store for app data (like cart count)
-import User from "@/components/user"; // Import the User component
+import User from "@/components/"; // Import the User component
 
 const NavigationLayout = ({ children }) => {
   const router = useRouter();
