@@ -69,7 +69,6 @@ const NavigationLayout = ({ children }) => {
           <NavigationLink href="/checkout" label="Checkout" />
           <NavigationLink href="/register" label="Register" />
           <NavigationLink href="/electronic" label="Store" />
-          <NavigationLink href="/categories" label="Categories" />
           <NavigationLink href="/dashboard" label="Dashboard" />
 
           <div style={{ flexGrow: 1 }} />
