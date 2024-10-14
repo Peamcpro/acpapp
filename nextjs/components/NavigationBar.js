@@ -13,9 +13,9 @@ import {
 import { useRouter } from "next/router";
 import Link from "next/link";
 import FunctionsIcon from "@mui/icons-material/Functions";
-import PersonIcon from "@mui/icons-material/Person";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import useBearStore from "@/store/useBearStore"; // Custom store for app data (like cart count)
+import User from "@/components/user"; // Import the User component
 
 const NavigationLayout = ({ children }) => {
   const router = useRouter();
@@ -29,16 +29,6 @@ const NavigationLayout = ({ children }) => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleProfileClick = () => {
-    handleMenuClose();
-    router.push("/dashboard");
-  };
-
-  const handleLogoutClick = () => {
-    handleMenuClose();
-    // Logic to log out user (e.g., clear user data, redirect to login)
   };
 
   const handleCartClick = () => {
@@ -84,18 +74,9 @@ const NavigationLayout = ({ children }) => {
             </Badge>
           </IconButton>
 
-          {/* User Icon with Menu */}
-          <IconButton onClick={handleMenuClick} color="inherit">
-            <PersonIcon />
-          </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-          >
-            <MenuItem onClick={handleProfileClick}>Dashboard</MenuItem>
-            <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
-          </Menu>
+          {/* User Button from user.js */}
+          <User /> {/* Add the User button component */}
+
         </Toolbar>
       </AppBar>
 
@@ -127,4 +108,3 @@ const NavigationLink = ({ href, label }) => {
 };
 
 export default NavigationLayout;
-d
