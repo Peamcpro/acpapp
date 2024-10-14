@@ -15,7 +15,7 @@ import Link from "next/link";
 import FunctionsIcon from "@mui/icons-material/Functions";
 import PersonIcon from "@mui/icons-material/Person";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import useBearStore from "@/store/useBearStore";  // Custom store for app data (like cart count)
+import useBearStore from "@/store/useBearStore"; // Custom store for app data (like cart count)
 
 const NavigationLayout = ({ children }) => {
   const router = useRouter();
@@ -38,7 +38,7 @@ const NavigationLayout = ({ children }) => {
 
   const handleLogoutClick = () => {
     handleMenuClose();
-    // Logic to log out user
+    // Logic to log out user (e.g., clear user data, redirect to login)
   };
 
   const handleCartClick = () => {
@@ -53,9 +53,8 @@ const NavigationLayout = ({ children }) => {
           <Link href="/" style={{ display: "flex", alignItems: "center" }}>
             <FunctionsIcon sx={{ color: "#ffffff" }} fontSize="large" />
             <Typography
-              variant="body1"
+              variant="h6"
               sx={{
-                fontSize: "22px",
                 fontWeight: 500,
                 color: "#ffffff",
                 padding: "0 10px",
@@ -70,6 +69,8 @@ const NavigationLayout = ({ children }) => {
           <NavigationLink href="/checkout" label="Checkout" />
           <NavigationLink href="/register" label="Register" />
           <NavigationLink href="/electronic" label="Store" />
+          <NavigationLink href="/categories" label="Categories" />
+          <NavigationLink href="/dashboard" label="Dashboard" />
 
           <div style={{ flexGrow: 1 }} />
 
@@ -127,3 +128,4 @@ const NavigationLink = ({ href, label }) => {
 };
 
 export default NavigationLayout;
+d
