@@ -48,7 +48,3 @@ async def update_user(user_id: int, username: str, password_hash: str, email: st
 async def delete_user(user_id: int):
     query = "DELETE FROM users WHERE user_id = :user_id RETURNING *"
     return await database.fetch_one(query=query, values={"user_id": user_id})
-
-
-
-
