@@ -1,46 +1,27 @@
-import React from 'react';
-import { Container, Typography, Button, Box } from '@mui/material';
-import { useRouter } from 'next/router';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-const UserPage = () => {
-  const router = useRouter();
+const User = () => {
+  const [user, setUser] = useState(null);
 
-  const handleLogout = () => {
-    // Logic to handle logout, e.g., clearing user session and redirecting
-    console.log('User logged out');
-    router.push('/login');
-  };
+  useEffect(() => {
+    const fetchUser = async () => {
+      const response = await axios.get('/api/users/1');  // Fetching user with ID 1
+      setUser(response.data);
+    };
+
+    fetchUser();
+  }, []);
+
+  if (!user) return <div>Loading...</div>;
 
   return (
-    <Container sx={{ marginTop: 5 }}>
-      <Typography variant="h4" gutterBottom>
-        User Profile
-      </Typography>
-
-      <Box sx={{ marginBottom: 3 }}>
-        <Typography variant="h6">Name: John Doe</Typography>
-        <Typography variant="body1">Email: johndoe@example.com</Typography>
-        <Typography variant="body1">Member since: January 2022</Typography>
-      </Box>
-
-      <Button 
-        variant="contained" 
-        color="primary" 
-        onClick={() => router.push('/user/settings')} 
-        sx={{ marginRight: 2 }}
-      >
-        Edit Profile
-      </Button>
-
-      <Button 
-        variant="contained" 
-        color="secondary" 
-        onClick={handleLogout}
-      >
-        Logout
-      </Button>
-    </Container>
+    <div>
+      <h1>User Profile</h1>
+      <p>Name: {user.username}</p>
+      <p>Email: {user.email}</p>
+    </div>
   );
 };
 
-export default UserPage;
+export default User;
