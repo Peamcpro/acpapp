@@ -1,37 +1,26 @@
-import React from 'react';
-import { Container, Grid, Paper, Typography } from '@mui/material';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const Dashboard = () => {
-  const dashboardData = {
-    users: 120,
-    sales: 750,
-    products: 35
-  };
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const response = await axios.get('/api/users/1');  // Assuming user ID 1
+      setUserData(response.data);
+    };
+
+    fetchUserData();
+  }, []);
+
+  if (!userData) return <div>Loading...</div>;
 
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>Dashboard</Typography>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={4}>
-          <Paper style={{ padding: '20px', textAlign: 'center' }}>
-            <Typography variant="h5">Users</Typography>
-            <Typography variant="h6">{dashboardData.users}</Typography>
-          </Paper>
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <Paper style={{ padding: '20px', textAlign: 'center' }}>
-            <Typography variant="h5">Sales</Typography>
-            <Typography variant="h6">${dashboardData.sales}</Typography>
-          </Paper>
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <Paper style={{ padding: '20px', textAlign: 'center' }}>
-            <Typography variant="h5">Products</Typography>
-            <Typography variant="h6">{dashboardData.products}</Typography>
-          </Paper>
-        </Grid>
-      </Grid>
-    </Container>
+    <div>
+      <h1>Dashboard</h1>
+      <p>Name: {userData.username}</p>
+      <p>Email: {userData.email}</p>
+    </div>
   );
 };
 
