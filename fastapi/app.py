@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from routes.users import router as user_router
-from your_database_module import connect_db, disconnect_db
+from database import connect_db, disconnect_db
 
 app = FastAPI()
 
