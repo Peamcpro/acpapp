@@ -73,10 +73,6 @@ const NavigationLayout = ({ children }) => {
               <ShoppingCartIcon />
             </Badge>
           </IconButton>
-
-          {/* User Button from user.js */}
-          <User /> {/* Ensure this component is correctly imported */}
-
         </Toolbar>
       </AppBar>
 
