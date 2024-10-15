@@ -3,9 +3,6 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  Button,
-  Menu,
-  MenuItem,
   Box,
   IconButton,
   Badge,
@@ -16,20 +13,10 @@ import FunctionsIcon from "@mui/icons-material/Functions";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import useBearStore from "@/store/useBearStore"; // Custom store for app data (like cart count)
 
-
 const NavigationLayout = ({ children }) => {
   const router = useRouter();
   const appName = useBearStore((state) => state.appName);  // App name from store
   const cartCount = useBearStore((state) => state.cartCount);  // Cart item count from store
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
 
   const handleCartClick = () => {
     router.push("/cart");  // Navigate to the cart page
@@ -61,7 +48,7 @@ const NavigationLayout = ({ children }) => {
           <NavigationLink href="/electronic" label="Store" />
           <NavigationLink href="/dashboard" label="Dashboard" />
 
-          <div style={{ flexGrow: 1 }} />
+          <Box sx={{ flexGrow: 1 }} /> {/* Spacer */}
 
           {/* Cart Button with Badge */}
           <IconButton
