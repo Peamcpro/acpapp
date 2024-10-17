@@ -17,10 +17,7 @@ export default function Home() {
             <Typography variant="h6" color="textSecondary" gutterBottom>
               Explore the best products across different categories!
             </Typography>
-            <Button variant="contained" color="primary" href="/Browse">
-              Browse
-            </Button>
-          </Box>
+            </Box>
           {/* Optional Hero Image */}
           <Box sx={{ mb: 5 }}>
             <img 
