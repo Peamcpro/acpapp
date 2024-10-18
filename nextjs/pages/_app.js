@@ -7,7 +7,7 @@ import { Roboto } from "next/font/google";
 import Layout from "@/components/layout";
 import useBearStore from "@/store/useBearStore";
 import Head from "next/head";
-import { Backdrop, CircularProgress } from "@mui/material";
+import { Backdrop, CircularProgress, Button, AppBar, Toolbar, Typography } from "@mui/material";
 
 const roboto = Roboto({
   weight: ["300", "400", "500", "700"],
@@ -32,9 +32,23 @@ export default function App({ Component, pageProps, props }) {
     console.log("App load", pageName, router.query);
     setLoading(true);
     // TODO: This section is use to handle page change.
-    setAppName("Home")
+    setAppName("Home");
     setLoading(false);
   }, [router, pageName]);
+
+  const handleLogout = () => {
+    // Perform any logout logic here, e.g., clearing session or token
+    // Then redirect to the home page or login page
+    router.push("/"); // Redirect to index.js or login page
+  };
+
+  const handleProfile = () => {
+    router.push("/profile"); // Navigate to the profile page
+  };
+
+  const handleSettings = () => {
+    router.push("/settings"); // Navigate to the settings page
+  };
 
   return (
     <React.Fragment>
@@ -48,10 +62,30 @@ export default function App({ Component, pageProps, props }) {
       <AppCacheProvider {...props}>
         <ThemeProvider theme={theme}>
           <Layout>
+            <AppBar position="static">
+              <Toolbar>
+                <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                  My Application
+                </Typography>
+                <Button color="inherit" onClick={handleProfile}>
+                  Profile
+                </Button>
+                <Button color="inherit" onClick={handleSettings}>
+                  Settings
+                </Button>
+                <Button color="inherit" onClick={handleLogout}>
+                  Logout
+                </Button>
+              </Toolbar>
+            </AppBar>
             <Component {...pageProps} />
           </Layout>
         </ThemeProvider>
       </AppCacheProvider>
+
+      <Backdrop open={loading} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </React.Fragment>
   );
 }
