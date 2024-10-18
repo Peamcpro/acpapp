@@ -1,66 +1,77 @@
-from fastapi import APIRouter, HTTPException, Depends
+# registration.py
+
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
-from database import insert_user, get_user, update_user, delete_user, get_all_users  # Assume these are your database functions
+from database import (
+    insert_register,
+    get_register,
+    update_register,
+    delete_register,
+    get_all_registers,
+)
 
 router = APIRouter()
 
-# Pydantic model for user creation
-class UserCreate(BaseModel):
+class RegisterCreate(BaseModel):
     username: str
+    email: str
     password_hash: str
-    email: str
+    first_name: str
+    last_name: str
 
-# Pydantic model for user update
-class UserUpdate(BaseModel):
+class RegisterUpdate(BaseModel):
     username: Optional[str] = None
-    password_hash: Optional[str] = None
     email: Optional[str] = None
+    password_hash: Optional[str] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
 
-# Pydantic model for user response
-class User(BaseModel):
-    user_id: int
+class Register(BaseModel):
+    id: int
     username: str
     email: str
+    first_name: str
+    last_name: str
     created_at: datetime
+    updated_at: datetime
 
-# Endpoint to create a new user
-@router.post("/users/", response_model=User)
-async def create_user(user: UserCreate):
-    user_id = await insert_user(user.username, user.password_hash, user.email)
-    if user_id is None:
-        raise HTTPException(status_code=400, detail="Error creating user")
-    return await get_user(user_id)
+@router.post("/registers/", response_model=Register)
+async def create_register(register: RegisterCreate):
+    register_id = await insert_register(
+        register.username,
+        register.email,
+        register.password_hash,
+        register.first_name,
+        register.last_name
+    )
+    return await get_register(register_id)
 
-# Endpoint to get a user by user_id
-@router.get("/users/{user_id}", response_model=User)
-async def read_user(user_id: int):
-    result = await get_user(user_id)
+@router.get("/registers/{register_id}", response_model=Register)
+async def read_register(register_id: int):
+    result = await get_register(register_id)
     if result is None:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="Register not found")
     return result
 
-# Endpoint to update a user
-@router.put("/users/{user_id}", response_model=User)
-async def update_user_endpoint(user_id: int, user: UserUpdate):
-    existing_user = await get_user(user_id)
-    if existing_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
+@router.put("/registers/{register_id}", response_model=Register)
+async def update_register_endpoint(register_id: int, register: RegisterUpdate):
+    existing_register = await get_register(register_id)
+    if existing_register is None:
+        raise HTTPException(status_code=404, detail="Register not found")
     
-    updated_user = await update_user(user_id, user.username, user.password_hash, user.email)
-    return updated_user
+    updated_register = await update_register(register_id, register)
+    return updated_register
 
-# Endpoint to delete a user
-@router.delete("/users/{user_id}")
-async def delete_user_endpoint(user_id: int):
-    result = await delete_user(user_id)
+@router.delete("/registers/{register_id}")
+async def delete_register_endpoint(register_id: int):
+    result = await delete_register(register_id)
     if result is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return {"detail": "User deleted"}
+        raise HTTPException(status_code=404, detail="Register not found")
+    return {"detail": "Register deleted"}
 
-# Endpoint to get all users
-@router.get("/users/", response_model=List[User])
-async def get_all_users_endpoint():
-    users = await get_all_users()
-    return users
+@router.get("/registers/", response_model=List[Register])
+async def get_all_registers_endpoint():
+    registers = await get_all_registers()
+    return registers
