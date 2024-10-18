@@ -3,16 +3,14 @@ import { TextField, Button, Grid, Typography, Paper, Snackbar, Alert, IconButton
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export default function AuthPage() {
-  // State hooks for form fields
   const [registerName, setRegisterName] = useState('');
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
   const [registerConfirmPassword, setRegisterConfirmPassword] = useState('');
-  
-  // State hooks for password visibility toggle
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
+
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -21,7 +19,6 @@ export default function AuthPage() {
     setOpenSnackbar(false);
   };
 
-  // Password visibility toggle functions
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -48,20 +45,19 @@ export default function AuthPage() {
         body: JSON.stringify({
           username: registerName,
           email: registerEmail,
-          password_hash: registerPassword,
+          password_hash: registerPassword,  // Store the password directly or hash it before storing
         }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.detail || 'Registration failed');
+        throw new Error(errorData.message || 'Registration failed');
       }
 
       const data = await response.json();
       setSnackbarMessage('Registration successful!');
       setSnackbarSeverity('success');
       setOpenSnackbar(true);
-      // Handle successful registration (e.g., redirect)
     } catch (error) {
       setSnackbarMessage(error.message);
       setSnackbarSeverity('error');
@@ -71,12 +67,9 @@ export default function AuthPage() {
 
   return (
     <Grid container spacing={2} style={{ height: '100vh', justifyContent: 'center', alignItems: 'center' }}>
-      {/* Register Section */}
       <Grid item xs={12} sm={6}>
         <Paper elevation={3} style={{ padding: '20px' }}>
-          <Typography variant="h5" gutterBottom>
-            Register
-          </Typography>
+          <Typography variant="h5" gutterBottom>Register</Typography>
           <form onSubmit={handleRegisterSubmit}>
             <TextField
               fullWidth
@@ -95,7 +88,6 @@ export default function AuthPage() {
               value={registerEmail}
               onChange={(e) => setRegisterEmail(e.target.value)}
             />
-            {/* Password Field */}
             <TextField
               fullWidth
               label="Password"
@@ -118,7 +110,6 @@ export default function AuthPage() {
                 ),
               }}
             />
-            {/* Confirm Password Field */}
             <TextField
               fullWidth
               label="Confirm Password"
@@ -148,7 +139,6 @@ export default function AuthPage() {
         </Paper>
       </Grid>
 
-      {/* Snackbar for notifications */}
       <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleSnackbarClose}>
         <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
           {snackbarMessage}
