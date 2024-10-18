@@ -19,89 +19,11 @@ async def disconnect_db():
     await database.disconnect()
     print("Database disconnected")
 
+# You can keep sync_tables() function if needed for other purposes, 
+# or you can remove it entirely if it's not required.
 async def sync_tables():
     """Sync all necessary tables."""
-    
-    # SQL for creating Users table
-    create_users_table = """
-    CREATE TABLE IF NOT EXISTS users (
-        user_id SERIAL PRIMARY KEY,
-        username VARCHAR(50) UNIQUE NOT NULL,
-        password_hash VARCHAR(255) NOT NULL,
-        email VARCHAR(100),
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-    """
-    
-    # SQL for creating Register table
-    create_register_table = """
-    CREATE TABLE IF NOT EXISTS register (
-        id SERIAL PRIMARY KEY,
-        username VARCHAR(50) NOT NULL UNIQUE,
-        email VARCHAR(100) NOT NULL UNIQUE,
-        password_hash VARCHAR(255) NOT NULL,
-        first_name VARCHAR(50) NOT NULL,
-        last_name VARCHAR(50) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        phone_number VARCHAR(15)
-    );
-    """
-    
-    # SQL for creating Products table
-    create_products_table = """
-    CREATE TABLE IF NOT EXISTS products (
-        product_id SERIAL PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        description TEXT,
-        price DECIMAL(10, 2) NOT NULL,
-        stock_quantity INT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-    """
-    
-    # SQL for creating Transactions table
-    create_transactions_table = """
-    CREATE TABLE IF NOT EXISTS transactions (
-        transaction_id SERIAL PRIMARY KEY,
-        product_id INT REFERENCES products(product_id),
-        transaction_type VARCHAR(10) CHECK (transaction_type IN ('buy', 'sell')),
-        quantity INT NOT NULL,
-        price DECIMAL(10, 2) NOT NULL,
-        total DECIMAL(10, 2) GENERATED ALWAYS AS (quantity * price) STORED,
-        buyer_id INT,
-        seller_id INT,
-        transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-    """
-    
-    # SQL for creating Payment table
-    create_payment_table = """
-    CREATE TABLE IF NOT EXISTS payment (
-        id SERIAL PRIMARY KEY,
-        product_id INT REFERENCES products(product_id) ON DELETE CASCADE,
-        payment_method VARCHAR(50) NOT NULL,
-        amount DECIMAL(10, 2) NOT NULL,
-        payment_status VARCHAR(50) NOT NULL DEFAULT 'pending',
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-    """
-    
-    # Execute the SQL to sync all tables
-    await database.execute(create_users_table)
-    print("Users table created/synced.")
-    
-    await database.execute(create_register_table)
-    print("Register table created/synced.")
-    
-    await database.execute(create_products_table)
-    print("Products table created/synced.")
-    
-    await database.execute(create_transactions_table)
-    print("Transactions table created/synced.")
-    
-    await database.execute(create_payment_table)
-    print("Payment table created/synced.")
+    # Removed table creation logic from here.
 
 # Function to insert a new user into the users table
 async def insert_user(username: str, password_hash: str, email: str):
