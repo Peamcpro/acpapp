@@ -18,14 +18,6 @@ export default function Home() {
               Explore the best products across different categories!
             </Typography>
             </Box>
-          {/* Optional Hero Image */}
-          <Box sx={{ mb: 5 }}>
-            <img 
-              src="/path/to/your/hero-image.jpg" 
-              alt="Hero" 
-              style={{ width: '100%', height: 'auto', borderRadius: '8px' }} 
-            />
-          </Box>
         </Container>
       </main>
       <footer>
