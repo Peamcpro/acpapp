@@ -167,5 +167,3 @@ async def get_payments():
 async def get_registers():
     query = "SELECT * FROM register"
     return await database.fetch_all(query=query)
-
-# You can implement additional CRUD functions for register, transactions, and payment as needed
