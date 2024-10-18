@@ -6,8 +6,12 @@ const User = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await axios.get('/api/users/1');  // Fetching user with ID 1
-      setUser(response.data);
+      try {
+        const response = await axios.get('/api/users/1');  // Fetching user with ID 1
+        setUser(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
     };
 
     fetchUser();
