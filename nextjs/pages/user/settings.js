@@ -1,60 +1,81 @@
-import * as React from 'react';
-import { Typography, Box, TextField, Button, Divider } from '@mui/material';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
-const Settings = () => {
-  // States for managing user input
-  const [email, setEmail] = useState('johndoe@example.com');
-  const [name, setName] = useState('John Doe');
+const RegisterForm = () => {
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const [responseMessage, setResponseMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSave = () => {
-    // Add logic for saving the updated settings
-    console.log("Settings saved:", { name, email, password });
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Create the payload
+    const payload = {
+      username: name,
+      email: email,
+      password_hash: password,  // Ensure your API expects hashed passwords
+    };
+
+    try {
+      // Send POST request to the register endpoint
+      const response = await axios.post('/api/register', payload);
+      
+      // If successful, store the response and clear form
+      setResponseMessage('Registration successful!');
+      setEmail('');
+      setName('');
+      setPassword('');
+    } catch (error) {
+      // Handle error and display error message
+      if (error.response) {
+        setErrorMessage(error.response.data.detail);
+      } else {
+        setErrorMessage('An error occurred during registration.');
+      }
+    }
   };
 
   return (
-    <Box sx={{ padding: 3, maxWidth: '600px', margin: '0 auto' }}>
-      <Typography variant="h4" sx={{ marginBottom: 3 }}>
-        User Settings
-      </Typography>
-
-      <Divider sx={{ marginBottom: 3 }} />
-
-      {/* Name Field */}
-      <TextField
-        label="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        fullWidth
-        sx={{ marginBottom: 3 }}
-      />
-
-      {/* Email Field */}
-      <TextField
-        label="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        fullWidth
-        sx={{ marginBottom: 3 }}
-      />
-
-      {/* Password Field */}
-      <TextField
-        label="Password"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        fullWidth
-        sx={{ marginBottom: 3 }}
-      />
-
-      {/* Save Button */}
-      <Button variant="contained" color="primary" onClick={handleSave}>
-        Save Changes
-      </Button>
-    </Box>
+    <div>
+      <h2>Register</h2>
+      {responseMessage && <p style={{ color: 'green' }}>{responseMessage}</p>}
+      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+      
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Email:</label>
+          <input 
+            type="email" 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+            required 
+          />
+        </div>
+        <div>
+          <label>Name:</label>
+          <input 
+            type="text" 
+            value={name} 
+            onChange={(e) => setName(e.target.value)} 
+            required 
+          />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input 
+            type="password" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            required 
+          />
+        </div>
+        <button type="submit">Register</button>
+      </form>
+    </div>
   );
 };
 
-export default Settings;
+export default RegisterForm;
